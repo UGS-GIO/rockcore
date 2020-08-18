@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M7CNXDK');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-11759067-12"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-11759067-12');
+</script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+  <title>UCRC Cores</title>
+
+<link rel="stylesheet" type="text/css" href="https://github.com/SitePen/dgrid/blob/master/css/dgrid.css" />
+
+  <!-- <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/dojo/1.8/dojox/grid/resources/Grid.css" /> -->
+
+  <!-- <link rel="stylesheet" href="/apps/calcite-boilerplate/dgrid.css"> -->
+
+  <!-- Calcite Maps Bootstrap -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.6.css">
+
+  <!-- Calcite Maps -->
+  <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.6.css">
+
+  <!-- ArcGIS JS 4 -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.5/esri/css/main.css">
+
+  <link rel="stylesheet" href="/apps/_ugsmaptemplate/template.css">
+
+  <link  href="viewer.css" rel="stylesheet">
+
+  <script src="viewer.js"></script>
+
+  <script src="exif.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
+
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    .panel-body.esri-legend.esri-widget {
+        background-color: #333333;
+    }
+    .esri-legend__layer-cell--info {
+
+        color: #fff;
+    }
+    .esri-legend__service-label {
+
+    color: #fff;
+}
+
+.esri-popup__feature-buttons .esri-popup__action {
+     max-width: 100%; 
+}
+
+#collapseLegend {
+    padding: 1px;
+   background-color: #333333;
+}
+
+.esri-legend__layer-caption {
+  display: none;
+  padding: 0px
+}
+
+    .esri-ui-bottom-left {
+    bottom: 16px;
+    left: 0;
+}
+
+.esri-view-height-large .esri-popup__main-container {
+    max-height: 380px;
+}
+
+#info-div {
+      background-color: #323232c9;
+      font-weight: bolder;
+      padding: 6px;
+      top: 295px;
+      left: 15px;
+      position: absolute;
+      display: inline-block;
+      color: white;
+      text-align: center;
+
+    }
+#layer-select {
+  color: black;
+  font-weight: normal;
+}
+
+#info-header {
+  background-color: #515151;
+  width: 137px;
+}
+
+/* .esri-icon-filter:hover .layer-select {
+  display: block;
+} */
+
+    .esri-icon-filter {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+    /* #info-div {
+      font-size: 14px;
+      background-color: #fff;
+      color: #6e6e6e;
+      width: 32px;
+      height: 32px;
+
+  } */
+
+
+    /* #attInventory {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 25%;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    } */
+
+    #optionsDiv {
+     background-color: lightgray;
+     color: black;
+     padding: 0px 10px 0px 10px;
+     border-bottom-left-radius: 5px;
+     max-width: 350px;
+   }
+
+    #dataDetail {
+      text-decoration: underline;
+      cursor: pointer
+    }
+    #dataDetail:hover{
+      text-decoration: none
+    }
+
+    /* fix margin search grid bug on mobile    */
+    @media (max-width:700px){
+      #collapseGrid {
+        margin-right:20px;
+      }
+    }
+
+    /* make search grid text black    */
+    .dgrid {
+      color: black;
+    }
+
+    .calcite-maps .esri-widget .esri-menu li {
+      color: black;
+    }
+
+    /*  add margin around search grid    */
+    #panelGrid .panel-body{
+      padding:0;
+      margin:10px;
+    }
+
+    /*  add margin around search grid    */
+    #panelInventory .panel-body{
+      padding:0;
+      margin:10px;
+    }
+
+    .dgrid-content {
+      margin: 0;
+      color: white;
+      font-size: 8pt;
+    }
+
+    .dgrid-scroller {
+      overflow-x: hidden;
+      top: 25px;
+    }
+
+    .bold {
+      font-weight: bold;   /*  not sure if needed?    */
+    }
+
+    .dgrid-header, .dgrid-header-row, .dgrid-footer {
+    color: black;
+  }
+
+.dgrid-selected {
+  background-color: #bbb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.row > .column {
+  padding: 0 8px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 25%;
+}
+
+/* .esri-view-width-less-than-large .esri-popup__action-text {
+  display: block !important;
+} */
+
+.pictures {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .pictures > li {
+      float: left;
+      width: 33.3%;
+      height: 33.3%;
+      margin: 0 -1px -1px 0;
+      border: 1px solid transparent;
+      overflow: hidden;
+    }
+    .pictures > li > img {
+      width: 100%;
+      cursor: -webkit-zoom-in;
+      cursor: zoom-in;
+    }
+
+    /* .myButton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
+	background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+	background-color:#ffffff;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:2px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:bold;
+	padding:1px 10px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
+	background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
+	background-color:#f6f6f6;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+} */
+
+  </style>
+
+
+
+</head>
+
+<body class="calcite-maps calcite-nav-top">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M7CNXDK"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<a class="ugs-watermark " href="https://geology.utah.gov"></a>
+
+  <!-- Navbar -->
+  <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark">
+    <!-- Menu -->
+    <div class="dropdown calcite-dropdown calcite-bg-light calcite-text-dark" role="presentation">
+      <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">
+        <div class="calcite-dropdown-toggle">
+          <span class="sr-only">Toggle dropdown menu</span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </a>
+      <ul class="dropdown-menu">
+        <!-- <li><a class="hidden-md hidden-lg" href="#2dTab" aria-controls="2Dtab" role="tab" data-toggle="tab"> Map</a></li> -->
+        <li><a class="active hidden-md hidden-lg" href="#3dTab" aria-controls="3Dtab" role="tab" data-toggle="tab"> Scene</a></li>
+        <li><a role="button"  data-target="#panelInfo" aria-haspopup="true"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+        <li><a role="button" data-target="#panelLegend" aria-haspopup="true"><span class="glyphicon glyphicon-list-alt"></span> Legend</a></li>
+        <li><a role="button" data-target="#panelLayers" aria-haspopup="true"><span class="glyphicon glyphicon-list"></span> Layers</a></li>
+        <!-- <li><a role="button" data-target="#panelOpacity" aria-haspopup="true"><span class="glyphicon glyphicon-adjust"></span> Layer Opacity</a></li> -->
+        <li><a role="button" data-target="#panelBasemaps" aria-haspopup="true"><span class="esri-icon-basemap"></span> Basemaps</a></li>
+        <li><a role="button" id="calciteLocate" aria-haspopup="true"><span class="glyphicon glyphicon-map-marker"></span> Locate</a></li>
+        <li><a role="button" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span> Full Map</a></li>
+        <li><a role="button" data-target="#panelInstructions" aria-haspopup="true"><span class="glyphicon glyphicon-question-sign"></span> Application Instructions</a></li>
+      </ul>
+    </div>
+    <!-- Title -->
+    <div class="calcite-title calcite-overflow-hidden">
+      <!-- <div id="logo"><a href="https://geology.utah.gov"><img src="http://geology.utah.gov/apps/wetlands/logo.png" style="width:34px"></a></div>  -->
+      <span class="calcite-title-main"><a href="https://geology.utah.gov">Utah Geological Survey</a></span>
+      <span class="calcite-title-divider hidden-xs"></span>
+      <span class="calcite-title-sub hidden-xs">Utah Core Research Center Inventory</span>
+    </div>
+     <!-- Nav -->
+    <ul class="calcite-nav nav navbar-nav">
+      <!-- <li  class="active"><a id="mapNav" class="hidden-xs hidden-sm" href="#2dTab" aria-controls="2Dtab" aria-expanded="true" role="tab" data-toggle="tab" data-tooltip="tip" title="2D View" data-placement="bottom">Map</a></li> -->
+      <!-- <li><a id="sceneNav" class="hidden-xs hidden-sm" href="#3dTab" aria-controls="3Dtab" role="tab" data-toggle="tab" data-tooltip="tip" title="3D View" data-placement="bottom">Scene</a></li> -->
+      <li><div class="calcite-navbar-search calcite-search-expander"><div id="searchNavDiv"></div></div></li>
+    </ul>
+  </nav><!--/.navbar -->
+
+  <!-- Map Container  -->
+
+  <div class="calcite-map calcite-map-absolute">
+    <div id="tabContainer" class="tab-content">
+      <div id="2dTab" class="tab-pane fade" role="tabpanel">
+         <div id="mapViewDiv"></div>
+      </div>
+      <div id="3dTab" class="tab-pane fade in active" role="tabpanel">
+        <div id="sceneViewDiv"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Container -->
+
+  <div class="calcite-panels calcite-panels-right calcite-bg-custom calcite-text-light calcite-bgcolor-dark panel-group" role="tablist" aria-multiselectable="true">
+
+    <!-- Info Panel -->
+
+    <div id="panelInfo" class="panel collapse in">
+      <div id="headingInfo" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseInfo"  aria-expanded="false" aria-controls="collapseInfo"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="panel-label">About</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelInfo"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div id="collapseInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
+        <div class="panel-body">
+          <!-- <p><strong></strong></p> -->
+          <p align="justify">Established in 1951, the Utah Geological Survey’s Utah Core Research Center contains the region’s only publicly available and most complete collection of geologic core and cuttings from Utah.  The facility presently holds core from over 1500 drill holes, totaling about 400,000 feet of material, and cuttings from nearly 5000 drill holes, representing over 57,000,000 feet of subsurface data.  This collection represents about $5 billion worth of investment in Utah’s natural resources.
+            The UCRC’s collection also includes cataloged outcrop samples (mostly from graduate student projects and state geologic mapping efforts), cuttings from water and geothermal wells, sidewall plugs, and numerous other hand samples.
+            The UCRC inventory can be searched using this map or the entire database can be downloaded as a spreadsheet.  If you have any questions regarding the UCRC’s collection or would like to look at any of the samples, please contact Peter Nielsen, UCRC Curator, 801.537.3359, <a href="mailto:peternielsen@utah.gov?Subject=UCRC%20Web%20App" target="_top">peternielsen@utah.gov</a>
+        </p>
+        <p align="justify"><strong>Related Information</strong>
+        <p><a title="Core Center Catalog" href="http://geology.utah.gov/docs/xls/ucrc_cores.xlsx">UCRC Inventory Database</a> (xlsx)</p>
+        <p><a href="http://wp.me/P5HpmR-1mm" target="_blank">Utah Core Research Center</a></p>
+        <p><a href="https://oilgas.ogm.utah.gov/oilgasweb/live-data-search/lds-logs/logs-lu.xhtml" target="_blank" rel="noopener noreferrer">Oil &#038; Gas Well Logs</a> (Division of Oil, Gas and Mining)<br />
+        View scanned logs of Utah oil and gas wells.</p>
+        <p><a href="https://wp.me/P5HpmR-5V5" target="_blank">Non-Petroleum Well Data</a><br />
+        Contains non-confidential old paper well data for non-petroleum exploration holes drilled in Utah.</p></p>
+
+        </div>
+     </div>
+    </div>
+
+    <!-- legend panel -->
+    <div id="panelLegend" class="panel collapse">
+    <div id="headingInfo" class="panel-heading" role="tab">
+      <div class="panel-title">
+        <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLegend"  aria-expanded="true" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Legend</span></a>
+        <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelLegend"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+    </div>
+    <div id="collapseLegend" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLegend">
+      <div class="panel-body">
+
+      </div>
+    </div>
+    </div>
+
+    <!-- Grid panelSearch panel -->
+    <div id="panelGrid" class="panel collapse">
+    <div id="headingInfo" class="panel-heading" role="tab">
+      <div class="panel-title">
+        <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseGrid"  aria-expanded="false" aria-controls="collapseGrid"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Search Results</span></a>
+        <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelGrid"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+    </div>
+    <div id="collapseGrid" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGrid">
+      <div class="panel-body">
+
+
+        <div id="grid"></div>
+        <!--  <div id="results" class="results"></div>  -->
+
+      </div>
+    </div>
+    </div>
+
+
+    <!-- Attribute Details panel -->
+    <div id="panelDetails" class="panel collapse">
+    <div id="headingInfo" class="panel-heading" role="tab">
+      <div class="panel-title">
+        <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseDetails"  aria-expanded="true" aria-controls="collapseDetails"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Photographs</span></a>
+        <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelDetails"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+    </div>
+    <div id="collapseDetails" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDetails">
+      <div class="panel-body">
+
+        <div id="gallery">
+                  <ul class="pictures" id="attDetails">
+          </ul>
+        </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inventory Details panel -->
+          <div id="panelInventory" class="panel collapse">
+          <div id="headingInfo" class="panel-heading" role="tab">
+            <div class="panel-title">
+              <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseInventory"  aria-expanded="true" aria-controls="collapseInventory"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><span class="panel-label">Sample Types & Depths</span></a>
+              <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelInventory"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+            </div>
+          </div>
+          <div id="collapseInventory" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInventory">
+            <div class="panel-body">
+
+              <div id="attInventory"></div>
+
+            </div>
+          </div>
+          </div>
+
+
+
+
+
+    <!-- layers panel -->
+    <div id="panelLayers" class="panel collapse">
+    <div id="headingInfo" class="panel-heading" role="tab">
+      <div class="panel-title">
+        <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseLayers"  aria-expanded="true" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="panel-label">Layers</span></a>
+        <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelLayers"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+    </div>
+    <div id="collapseLayers" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLayers">
+      <div class="panel-body">
+
+      </div>
+    </div>
+    </div>
+
+    <!-- Opacity panel -->
+    <!-- <div id="panelOpacity" class="panel collapse">
+    <div id="headingInfo" class="panel-heading" role="tab">
+      <div class="panel-title">
+        <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseOpacity"  aria-expanded="true" aria-controls="collapseLegend"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="panel-label">Layer Opacity</span></a>
+        <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelOpacity"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+      </div>
+    </div>
+    <div id="collapseOpacity" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLayers">
+      <div class="panel-body">
+        <div id="opacitySlider"></div>
+      </div>
+    </div>
+    </div> -->
+
+    <!-- Basemaps Panel -->
+    <div id="panelBasemaps" class="panel collapse">
+      <div id="headingBasemaps" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseBasemaps" aria-expanded="false"   aria-controls="collapseBasemaps"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span><span class="panel-label">Basemaps</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelBasemaps"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div id="collapseBasemaps" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBasemaps">
+        <div class="panel-body">
+          <select id="selectBasemapPanel" class="form-control">
+            <option value="streets" data-vector="streets-vector">Streets</option>
+            <option value="satellite" data-vector="satellite">Satellite</option>
+            <option value="hybrid" data-vector="hybrid">Hybrid</option>
+            <option value="national-geographic" data-vector="national-geographic">National Geographic</option>
+            <option value="topo" data-vector="topo-vector" selected="">Topographic</option>
+            <option value="gray" data-vector="gray-vector">Gray</option>
+            <option value="dark-gray" data-vector="dark-gray-vector">Dark Gray</option>
+            <option value="osm" data-vector="osm">Open Street Map</option>
+            <option value="dark-gray" data-vector="streets-night-vector">Streets Night</option>
+            <option value="streets" data-vector="streets-navigation-vector">Streets Mobile</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel - Print -->
+
+    <div id="panelPrint" class="panel collapse">
+      <div id="headingPrint" class="panel-heading">
+        <div class="panel-title">
+          <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapsePrint" aria-expanded="false" aria-controls="collapsePrint"><span class="glyphicon glyphicon-print" aria-hidden="true"></span><span class="panel-label">Print</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelPrint"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div id="collapsePrint" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPrint">
+        <div class="panel-body">
+        <div class="form-group">
+
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel - Share -->
+    <div id="panelShare" class="panel collapse">
+      <div id="headingShare" class="panel-heading">
+        <div class="panel-title">
+        <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseShare" aria-expanded="false" aria-controls="collapseShare"><span class="glyphicon glyphicon-share" aria-hidden="true"></span><span class="panel-label">Share</span></a>
+        <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelShare"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div id="collapseShare" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingShare">
+        <div class="panel-body">
+          <iframe src="https://platform.twitter.com/widgets/tweet_button.html?size=l&url=https%3A%2F%2Fgeology.utah.gov&via=ugstwitter&related=twitterapi%2Ctwitter&text=Check%20out%20this%20great%20interactive%20map%20from%20the%20UGS&hashtags=utahgeologicalsurvey"
+            width="140" height="28" title="Twitter Tweet Button" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+          <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button_count&size=large&mobile_iframe=true&width=105&height=28&appId"
+            width="105" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+          <p class="sharetext">Copy/paste the URL below to share this map via email, web browser, text editor, etc.</p>
+          <textarea class="textarea"> </textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Application Instructions Panel -->
+
+    <div id="panelInstructions" class="panel collapse">
+        <div id="headingInstructions" class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseInstructions"  aria-expanded="true" aria-controls="collapseInstructions"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="panel-label">Application Instructions</span></a>
+            <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelInstructions"><span class="esri-icon esri-icon-close" aria-hidden="true"></span></a>
+          </div>
+        </div>
+        <div id="collapseInstructions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingInstructions">
+          <div class="panel-body">
+
+          <p><strong>Search Options:</strong> Users can search the UCRC Inventory by entering UWI Number, Well Name, Operator, Producing Formation, Township or Range in the search bar(found in upper-right corner of window). Users can clear all search results by clicking the "X" in the search bar.</p>
+                <!-- <p style="padding-left:2.5em">
+                    &bull;&nbsp;<strong>Fault Search</strong> -Recognizes any part of a structure name, including fault zone (for example, "Wasatch" fault zone), fault section (for example, "Salt Lake City" section of the Wasatch fault zone), or fault strand (for example, "East Bench" fault, part of the Salt Lake City section of the Wasatch fault zone). "Fault Search" results will be highlighted in pink. When a fault line or fold axis is clicked on, that part of the structure, and all parts of the structure that share identical attributes, will be highlighted in yellow, while the rest of the structure remains highlighted in pink.<br>
+                    &bull;&nbsp;<strong>Location Search</strong> -Recognizes street address, place name (city, town, business, etc.), and longitude and latitude (in decimal degrees).<br>
+                    &bull;&nbsp;<strong>Parcel Search</strong> -Recognizes parcel identification number (available only for Box Elder, Cache, Davis, Iron, Juab, Salt Lake, Sanpete, Utah, Washington, and Weber Counties).</p> -->
+
+                <p><strong>Wells on the Map:</strong> Clicking on a well location will open a pop-up that provides summary information for that particular well. Along the bottom of the pop-up an inventory button will open a table of all related inventory for that well that is housed at the UCRC. A photo button will open a gallery of photographs for the related inventory(not all inventory has photographs).</p>
+
+
+          </div>
+       </div>
+      </div>
+
+  </div> <!-- /.calcite-panels -->
+
+  <!-- <div id="info-div" class="filter-button" role="button" title="Filter by Sample Type"><span class="esri-icon-filter"></span>
+      <select id="layer-select">
+        <option value="1=1" selected>Show All</option>
+        <option value="TYPE LIKE 'CORE' OR TYPE LIKE '%CORE,%' OR TYPE LIKE '%,CORE' OR TYPE LIKE 'BUTTS' OR TYPE LIKE '%BUTTS,%' OR TYPE LIKE '%,BUTTS' OR TYPE LIKE 'SLABS' OR TYPE LIKE '%SLABS,%' OR TYPE LIKE '%,SLABS' OR TYPE LIKE 'SKELETONIZED CORE' OR TYPE LIKE '%SKELETONIZED CORE,%' OR TYPE LIKE '%,SKELETONIZED CORE'">Core</option>
+        <option value="TYPE LIKE 'CUTTINGS' OR TYPE LIKE '%CUTTINGS,%' OR TYPE LIKE '%,CUTTINGS%' OR TYPE LIKE 'CHIPS' OR TYPE LIKE '%CHIPS,%' OR TYPE LIKE '%,CHIPS%' OR TYPE LIKE 'CORE CHIPS' OR TYPE LIKE '%CORE CHIPS,%' OR TYPE LIKE '%,CORE CHIPS%'">Cuttings</option>
+        <option value="TYPE LIKE 'OUTCROP SAMPLES' OR TYPE LIKE '%OUTCROP SAMPLES,%' OR TYPE LIKE '%,OUTCROP SAMPLES' OR TYPE LIKE 'SIDEWALL' OR TYPE LIKE '%SIDEWALL,%' OR TYPE LIKE '%,SIDEWALL' OR TYPE LIKE 'SAMPLE' OR TYPE LIKE '%SAMPLE,%' OR TYPE LIKE '%,SAMPLE' OR TYPE LIKE 'OIL SAMPLES' OR TYPE LIKE '%OIL SAMPLES,%' OR TYPE LIKE '%,OIL SAMPLES'OR TYPE LIKE 'DISPLAY' OR TYPE LIKE '%DISPLAY,%' OR TYPE LIKE '%,DISPLAY'">Other</option>
+        <option value="Photographs LIKE 'YES'">Wells with Photos</option>
+      </select>
+
+
+    </div> -->
+    
+    <div id="info-div" title="Filter by Sample Type">
+        <div id="info-header">Filter By Sample Type</div>
+        <select id="layer-select">
+            <option value="1=1" selected>All</option>
+            <option value="TYPE LIKE 'CORE' OR TYPE LIKE '%CORE,%' OR TYPE LIKE '%,CORE' OR TYPE LIKE 'BUTTS' OR TYPE LIKE '%BUTTS,%' OR TYPE LIKE '%,BUTTS' OR TYPE LIKE 'SLABS' OR TYPE LIKE '%SLABS,%' OR TYPE LIKE '%,SLABS' OR TYPE LIKE 'SKELETONIZED CORE' OR TYPE LIKE '%SKELETONIZED CORE,%' OR TYPE LIKE '%,SKELETONIZED CORE'">Core</option>
+            <option value="TYPE LIKE 'CUTTINGS' OR TYPE LIKE '%CUTTINGS,%' OR TYPE LIKE '%,CUTTINGS%' OR TYPE LIKE 'CHIPS' OR TYPE LIKE '%CHIPS,%' OR TYPE LIKE '%,CHIPS%' OR TYPE LIKE 'CORE CHIPS' OR TYPE LIKE '%CORE CHIPS,%' OR TYPE LIKE '%,CORE CHIPS%'">Cuttings</option>
+            <option value="TYPE LIKE 'OUTCROP SAMPLES' OR TYPE LIKE '%OUTCROP SAMPLES,%' OR TYPE LIKE '%,OUTCROP SAMPLES' OR TYPE LIKE 'SIDEWALL' OR TYPE LIKE '%SIDEWALL,%' OR TYPE LIKE '%,SIDEWALL' OR TYPE LIKE 'SAMPLE' OR TYPE LIKE '%SAMPLE,%' OR TYPE LIKE '%,SAMPLE' OR TYPE LIKE 'OIL SAMPLES' OR TYPE LIKE '%OIL SAMPLES,%' OR TYPE LIKE '%,OIL SAMPLES'OR TYPE LIKE 'DISPLAY' OR TYPE LIKE '%DISPLAY,%' OR TYPE LIKE '%,DISPLAY'">Other</option>
+            <option value="Photographs LIKE 'YES'">Wells with Photos</option>
+          </select>
+      <!-- <div align="center"><button class="myButton" id="All">All</button></div>
+      <div align="center"><button class="myButton" id="Core">Core</button></div>
+        <div align="center"><button class="myButton" id="Cuttings">Cuttings</button></div>
+        <div align="center"><button class="myButton" id="Other">Other</button></div>
+        <div align="center"><button class="myButton" id="Photos">Photos</button></div> -->
+    </div>
+
+
+
+  <script type="text/javascript">
+    var dojoConfig = {
+      packages: [{
+        name: "bootstrap",
+        location: "https://esri.github.io/calcite-maps/dist/vendor/dojo-bootstrap"
+      },
+      {
+        name: "calcite-maps",
+        location: "https://esri.github.io/calcite-maps/dist/js/dojo"
+      }]
+    };
+  </script>
+
+
+  <script src="https://js.arcgis.com/4.5/"></script>
+
+  <script>
+  var app;
+  app = {
+    scale: 2000000,
+    center: "-111.68190, 39.33122",
+    basemap: "satellite",
+    initialExtent: null,
+    tilt: null,
+    mview: null,
+    viewPadding: {
+      top: 50, bottom: 0
+    },
+    uiPadding: {
+      top: 15, bottom: 15
+    },
+    activeView: null,
+    searchWidgetNav: null
+  };
+
+  </script>
+
+  <script src="/apps/_ugsmaptemplate/ugstemplate.js"></script>
+
+  <script src="rockcore.js"></script>
+
+
+
+
+
+
+<!-- <link rel="stylesheet" href="template-rangeslider.css" type="text/css" media="all" property=""> -->
+
+
+</body>
+</html>
