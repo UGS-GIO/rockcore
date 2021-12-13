@@ -5,7 +5,7 @@ Project Manager:
 Marshall Robinson
 
 Product Manager:
-Mike Vanden Berg (via Katie Cummings)
+Katie Cummings
 
 Data Manager:
 Martha Jensen
