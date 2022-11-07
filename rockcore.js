@@ -742,10 +742,11 @@ app.view.popup.featureNavigationEnabled = true;
                     });
                     finalArray6 = Math.max.apply(this, myArray6);
                     document.getElementById("attInventory").innerHTML += "<p> Top Depth: " + finalArray5 + " Feet" + "<br>Bottom Depth: " + finalArray6 + " Feet" + "<br>";
-                } else {
-                    console.log(slabArray)
-                    document.getElementById("attInventory").innerHTML += "<p> Top Depth: No Data <br>Bottom Depth: No Data<br>";
                 } 
+                // else {
+                //     console.log(slabArray)
+                //     document.getElementById("attInventory").innerHTML += "<p> Top Depth: No Data <br>Bottom Depth: No Data<br>";
+                // } 
 
                 //check to see if butts exist for this well
                 if (buttArray.length > 0) {
