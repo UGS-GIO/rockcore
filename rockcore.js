@@ -679,14 +679,18 @@ app.view.popup.featureNavigationEnabled = true;
                     document.getElementById("attInventory").innerHTML += "<b>Cuttings</b>";
                     //find min top depth
                     cuttingsArray.forEach(function(ftr) {
+                        if (ftr.Top_Depth !== null) {
                         var top = ftr.Top_Depth;
                         myArray1.push(top);
+                        }
                     });
                     finalArray1 = Math.min.apply(null, myArray1);
                     //get max bottom depth
                     cuttingsArray.forEach(function(ftr) {
+                        if (ftr.Bottom_Depth !== null) {
                         var bottom = ftr.Bottom_Depth;
                         myArray2.push(bottom);
+                        }
                     });
                     finalArray2 = Math.max.apply(null, myArray2);
                     document.getElementById("attInventory").innerHTML += "<p> Top Depth: " + finalArray1 + " Feet" + "<br>Bottom Depth: " + finalArray2 + " Feet" + "<br>";
@@ -696,51 +700,70 @@ app.view.popup.featureNavigationEnabled = true;
                 if (skeletonizedArray.length > 0) {
                     //find min top depth
                     skeletonizedArray.forEach(function(ftr) {
+                        if (ftr.Top_Depth !== null) {
                         var top = ftr.Top_Depth;
                         myArray3.push(top);
+                        }
                     });
                     finalArray3 = Math.min.apply(null, myArray3);
 
                     //get max bottom depth
                     skeletonizedArray.forEach(function(ftr) {
+                        if (ftr.Bottom_Depth !== null) {
                         var bottom = ftr.Bottom_Depth;
                         myArray4.push(bottom);
+                        }
                     });
                     finalArray4 = Math.max.apply(null, myArray4);
                     document.getElementById("attInventory").innerHTML += "<b>Skeletonized Core</b> <p> Top Depth: " + finalArray3 + " Feet" + "<br>Bottom Depth: " + finalArray4 + " Feet" + "<br>";
                 }
 
                 //check to see if slabs exist for this well
-                if (slabArray.length > 0) {
+                console.log(slabArray)
+                if (slabArray.length !== 0 && slabArray[0].Top_Depth !== null && slabArray[0].Bottom_Depth !== null) {
+                    console.log(slabArray)
                     document.getElementById("attInventory").innerHTML += "<b>Slabs</b>";
                     //find min top depth
                     slabArray.forEach(function(ftr) {
+                        console.log(ftr)
+                        if (ftr.Top_Depth !== null) {
                         var top = ftr.Top_Depth;
+                        console.log(top)
                         myArray5.push(top);
+                        } 
                     });
-                    finalArray5 = Math.min.apply(null, myArray5);
+                    finalArray5 = Math.min.apply(this, myArray5);
                     //get max bottom depth
                     slabArray.forEach(function(ftr) {
+                        if (ftr.Bottom_Depth !== null) {
                         var bottom = ftr.Bottom_Depth;
                         myArray6.push(bottom);
+                        }
                     });
-                    finalArray6 = Math.max.apply(null, myArray6);
+                    finalArray6 = Math.max.apply(this, myArray6);
                     document.getElementById("attInventory").innerHTML += "<p> Top Depth: " + finalArray5 + " Feet" + "<br>Bottom Depth: " + finalArray6 + " Feet" + "<br>";
-                }
+                } else {
+                    console.log(slabArray)
+                    document.getElementById("attInventory").innerHTML += "<p> Top Depth: No Data <br>Bottom Depth: No Data<br>";
+                } 
 
                 //check to see if butts exist for this well
                 if (buttArray.length > 0) {
                     document.getElementById("attInventory").innerHTML += "<b>Butts</b>";
                     //find min top depth
                     buttArray.forEach(function(ftr) {
+                        if (ftr.Top_Depth !== null) {
                         var top = ftr.Top_Depth;
                         myArray7.push(top);
+                        }
                     });
                     finalArray7 = Math.min.apply(null, myArray7);
                     //get max bottom depth
                     buttArray.forEach(function(ftr) {
+                        if (ftr.Bottom_Depth !== null) {
                         var bottom = ftr.Bottom_Depth;
                         myArray8.push(bottom);
+                        }
                     });
                     finalArray8 = Math.max.apply(null, myArray8);
                     document.getElementById("attInventory").innerHTML += "<p> Top Depth: " + finalArray7 + " Feet" + "<br>Bottom Depth: " + finalArray8 + " Feet" + "<br>";
@@ -751,14 +774,18 @@ app.view.popup.featureNavigationEnabled = true;
                     document.getElementById("attInventory").innerHTML += "<b>Chips</b>";
                     //find min top depth
                     chipsArray.forEach(function(ftr) {
+                        if (ftr.Top_Depth !== null) {
                         var top = ftr.Top_Depth;
                         myArray9.push(top);
+                        }
                     });
                     finalArray9 = Math.min.apply(null, myArray9);
                     //get max bottom depth
                     chipsArray.forEach(function(ftr) {
+                        if (ftr.Bottom_Depth !== null) {
                         var bottom = ftr.Bottom_Depth;
                         myArray10.push(bottom);
+                        }
                     });
                     finalArray10 = Math.max.apply(null, myArray10);
                     document.getElementById("attInventory").innerHTML += "<p> Top Depth: " + finalArray9 + " Feet" + "<br>Bottom Depth: " + finalArray10 + " Feet" + "<br>";
@@ -769,14 +796,18 @@ app.view.popup.featureNavigationEnabled = true;
                     document.getElementById("attInventory").innerHTML += "<b>Core Chips</b>";
                     //find min top depth
                     corechipsArray.forEach(function(ftr) {
+                        if (ftr.Top_Depth !== null) {
                         var top = ftr.Top_Depth;
                         myArray11.push(top);
+                        }
                     });
                     finalArray11 = Math.min.apply(null, myArray11);
                     //get max bottom depth
                     corechipsArray.forEach(function(ftr) {
+                        if (ftr.Bottom_Depth !== null) {
                         var bottom = ftr.Bottom_Depth;
                         myArray12.push(bottom);
+                        }
                     });
                     finalArray12 = Math.max.apply(null, myArray12);
                     document.getElementById("attInventory").innerHTML += "<p> Top Depth: " + finalArray11 + " Feet" + "<br>Bottom Depth: " + finalArray12 + " Feet" + "<br>";
@@ -787,18 +818,22 @@ app.view.popup.featureNavigationEnabled = true;
                     document.getElementById("attInventory").innerHTML += "<b>Core</b>";
                     //find min top depth
                     coreArray.forEach(function(ftr) {
+                        if (ftr.Top_Depth !== null) {
                         var top = ftr.Top_Depth;
                         myArray13.push(top);
+                        }
                     });
-                    finalArray13 = Math.min.apply(null, myArray13);
+                    finalArray13 = Math.min.apply(this, myArray13);
                     //get max bottom depth
                     coreArray.forEach(function(ftr) {
+                        if (ftr.Bottom_Depth !== null) {
                         var bottom = ftr.Bottom_Depth;
                         myArray14.push(bottom);
+                        }
                     });
-                    finalArray14 = Math.max.apply(null, myArray14);
+                    finalArray14 = Math.max.apply(this, myArray14);
                     document.getElementById("attInventory").innerHTML += "<p> Top Depth: " + finalArray13 + " Feet" + "<br>Bottom Depth: " + finalArray14 + " Feet" + "<br>";
-                }
+                }               
 
                 //check to see if outcrop exist for this well
                 if (outcropArray.length > 0) {
