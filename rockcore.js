@@ -559,21 +559,186 @@ app.view.popup.featureNavigationEnabled = true;
             className: "esri-icon-media"
         };
 
-        function photoGallery() {
-            query("#panelInventory").removeClass("in");
-            var viewer;
-            app.view.on('click', function() {
-                viewer.destroy();
-                // -> true
-            }, false);
+    //new viewer function
+        // Function to initialize or reinitialize the viewer
+function initializeViewer(galleryElement) {
+    // Destroy existing viewer if it exists
+    if (window.currentViewer) {
+        window.currentViewer.destroy();
+        window.currentViewer = null;
+    }
 
-            showHideCalcitePanels("#panelDetails", "#collapseDetails");
-            viewer = new Viewer(gallery, {
-                url: 'data-original',
-            });
-            console.log(viewer);
-
+    // Create new viewer with optimized options
+    window.currentViewer = new Viewer(galleryElement, {
+        inline: false,
+        loading: true,
+        loadingSpinner: true,
+        navbar: true,
+        title: true,
+        toolbar: true,
+        tooltip: true,
+        movable: true,
+        zoomable: true,
+        rotatable: true,
+        scalable: true,
+        transition: true,
+        fullscreen: true,
+        keyboard: true,
+        url: 'data-original',
+        ready: function() {
+            console.log('Viewer is ready');
+        },
+        show: function() {
+            console.log('Viewer is showing');
+        },
+        viewed: function() {
+            console.log('Image is viewed');
+        },
+        error: function(event) {
+            console.error('Viewer error:', event);
         }
+    });
+    
+    return window.currentViewer;
+}
+
+// Function to load and display photos
+function loadPhotos(objectID) {
+    const galleryElement = document.getElementById('gallery');
+    const photoList = document.getElementById('attDetails');
+    
+    if (!photoList || !galleryElement) {
+        console.error('Required elements not found');
+        return;
+    }
+
+    // Clear existing photos
+    photoList.innerHTML = '';
+    
+    // Show loading state
+    photoList.innerHTML = '<li class="loading">Loading photos...</li>';
+
+    // Query the well layer
+    const queryTask = new QueryTask({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/UCRC_Database_App_View/FeatureServer/0"
+    });
+
+    // Query for related photos
+    const relationQuery = new RelationshipQuery({
+        objectIds: [objectID],
+        outFields: ["Filename", "Path", "Type", "Top_Depth", "Bottom_Depth", "Fileurl"],
+        returnGeometry: true,
+        relationshipId: 1
+    });
+
+    queryTask.executeRelationshipQuery(relationQuery)
+        .then(function(results) {
+            // Clear loading state
+            photoList.innerHTML = '';
+            
+            if (!results || !results[objectID] || !results[objectID].features) {
+                photoList.innerHTML = '<li class="no-photos">No photos available</li>';
+                return;
+            }
+
+            const features = results[objectID].features;
+            console.log('Loaded features:', features.length);
+
+            // Sort features by depth if available
+            features.sort(function(a, b) {
+                const depthA = a.attributes.Top_Depth || 0;
+                const depthB = b.attributes.Top_Depth || 0;
+                return depthA - depthB;
+            });
+
+            // Process features in chunks to avoid overwhelming the browser
+            const chunkSize = 10;
+            let currentIndex = 0;
+
+            function processNextChunk() {
+                const chunk = features.slice(currentIndex, currentIndex + chunkSize);
+                
+                chunk.forEach(function(feature) {
+                    const attrs = feature.attributes;
+                    const fileURL = attrs.Fileurl;
+                    const name = attrs.Filename;
+                    
+                    if (name && (name.match(/.jpg/i) || name.match(/.JPG/i))) {
+                        const string = fileURL.substr(3);
+                        const baseUrl = 'https://ugspub.nr.utah.gov/publications/core_photos/';
+                        const fullUrl = baseUrl + string;
+                        
+                        const li = document.createElement('li');
+                        const img = document.createElement('img');
+                        
+                        img.setAttribute('data-original', fullUrl);
+                        img.src = fullUrl;
+                        img.alt = name;
+                        
+                        if (attrs.Top_Depth) {
+                            img.setAttribute('title', `Depth: ${attrs.Top_Depth} ft`);
+                        }
+                        
+                        li.appendChild(img);
+                        photoList.appendChild(li);
+                    }
+                });
+
+                currentIndex += chunkSize;
+
+                // If there are more features to process, schedule the next chunk
+                if (currentIndex < features.length) {
+                    setTimeout(processNextChunk, 100);
+                } else {
+                    // All photos loaded, initialize the viewer
+                    console.log('Initializing viewer with', photoList.children.length, 'photos');
+                    initializeViewer(galleryElement);
+                }
+            }
+
+            // Start processing the first chunk
+            processNextChunk();
+        })
+        .catch(function(error) {
+            console.error('Error loading photos:', error);
+            photoList.innerHTML = '<li class="error">Error loading photos</li>';
+        });
+}
+
+// Add styles for loading and error states
+const style = document.createElement('style');
+style.textContent = `
+    .loading {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+    }
+    .no-photos {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+    }
+    .error {
+        text-align: center;
+        padding: 20px;
+        color: #f00;
+    }
+`;
+document.head.appendChild(style);
+
+// Export the functions for use in other parts of the application
+window.photoViewer = {
+    loadPhotos,
+    initializeViewer
+};
+
+function photoGallery() {
+    query("#panelInventory").removeClass("in");
+    showHideCalcitePanels("#panelDetails", "#collapseDetails");
+    window.currentViewer = initializeViewer(gallery);
+}
+
+
 
         function coreInventory() {
             query("#panelDetails").removeClass("in");
